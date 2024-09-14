@@ -10,9 +10,11 @@
 #include "Main.h"
 #pragma comment(lib,"Wininet.lib")
 #pragma comment(lib, "winmm.lib")
+
 namespace Variables {
     int ActiveTab = 1;
 }
+
 int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, LOADER_BRAND, NULL };
@@ -25,7 +27,6 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     }
     ShowWindow(main_hwnd, SW_HIDE);
     UpdateWindow(main_hwnd);
-
 
     ImGui::CreateContext();
 
