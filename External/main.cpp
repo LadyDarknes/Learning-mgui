@@ -16,6 +16,7 @@
 namespace Variables {
     int ActiveTab = 1;
 }
+//try1
 //change
 int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
