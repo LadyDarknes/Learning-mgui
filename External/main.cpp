@@ -139,11 +139,33 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(400, 250));
             ImGui::SetNextWindowBgAlpha(1.0f);
-            ImGui::Begin("                  External Menu", &loader_active, window_flags);
+            if (ImGui::Begin("                  Roblox External Cheat", &loader_active, window_flags))
             {
-               ImGui::Text("                  ProB1#0100\n               Simple menu for news");
+                if (ImGui::BeginTabBar("MyTabBar"))
+                {
+                    if (ImGui::BeginTabItem("Tab 1"))
+                    {
+                        ImGui::Text("Tab 1 ");
+                        ImGui::EndTabItem();
+                    }
+
+                    if (ImGui::BeginTabItem("Tab 2"))
+                    {
+                        ImGui::Text("Tab 2");
+                        ImGui::EndTabItem();
+                    }
+
+                    if (ImGui::BeginTabItem("Tab 3"))
+                    {
+                        ImGui::Text("Tab 3");
+                        ImGui::EndTabItem();
+                    }
+
+                    ImGui::EndTabBar();
+                }
             }
             ImGui::End();
+
         }
         ImGui::EndFrame();
 
