@@ -7,31 +7,22 @@
 #include <winbase.h>
 #include <tchar.h>
 #include <WinInet.h>
-// 123123bfyngusd
 #include "Main.h"
-
 #pragma comment(lib,"Wininet.lib")
 #pragma comment(lib, "winmm.lib")
-
 namespace Variables {
     int ActiveTab = 1;
 }
-// 123
 int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, LOADER_BRAND, NULL };
     RegisterClassEx(&wc);
     main_hwnd = CreateWindow(wc.lpszClassName, LOADER_BRAND, WS_POPUP, 0, 0, 5, 5, NULL, NULL, wc.hInstance, NULL);
-
-
     if (!CreateDeviceD3D(main_hwnd)) {
         CleanupDeviceD3D();
         UnregisterClass(wc.lpszClassName, wc.hInstance);
         return 1;
     }
-
-
     ShowWindow(main_hwnd, SW_HIDE);
     UpdateWindow(main_hwnd);
 
