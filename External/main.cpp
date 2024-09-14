@@ -143,9 +143,9 @@ int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
             {
                 if (ImGui::BeginTabBar("MyTabBar"))
                 {
-                    if (ImGui::BeginTabItem("Tab 1"))
+                    if (ImGui::BeginTabItem("Esp"))
                     {
-                        ImGui::Text("Tab 1 ");
+                        ImGui::Text("wwwwww");
                         ImGui::EndTabItem();
                     }
 
