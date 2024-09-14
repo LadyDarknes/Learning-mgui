@@ -7,7 +7,7 @@
 #include <winbase.h>
 #include <tchar.h>
 #include <WinInet.h>
-#include <curl/curl.h>
+#include "curl/curl.h"
 #include "Main.h"
 #pragma comment(lib,"Wininet.lib")
 #pragma comment(lib, "winmm.lib")
